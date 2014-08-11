@@ -23,7 +23,7 @@ public class ModelComparator {
 
 		try {
 
-			LineIterator lines = FileUtils.lineIterator(new File("/home/igor/git/tweet2vec/code/tweet2vec/src/main/resources/SICK_test_annotated.txt"));
+			LineIterator lines = FileUtils.lineIterator(new File("/home/igor/git/SemEval2014-Task1/data/SICK_test_annotated.txt"));
 			// skip header:
 			lines.next();
 
@@ -45,17 +45,22 @@ public class ModelComparator {
 		
 		
 	//	models.add(GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/vectors.6B.200d"));
-		models.add(ModelLoader.load("/home/igor/git/word2vec-java/src/main/resources/vectors.bin"));
+	//	models.add(ModelLoader.load("/home/igor/git/word2vec-java/src/main/resources/vectors.bin"));
+		models.add(GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/vectors.840B.300d"));
 		
 		
 		for (Word2Vec model : models) {
 			
-			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/Insight_w2v_text8.txt");
+			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/Insight_w2v_glove840b.txt");
 
 			List<Sentence> results_sentences = new ArrayList<Sentence>();
 
 			for (Sentence sentence : sentences) {
-				float similarity = interpolateScore(VectorMath.cosineSimilarity(model.sentenceVector(sentence.sA), model.sentenceVector(sentence.sB)));
+				float similarity = interpolateScore(
+						VectorMath.cosineSimilarity(
+								VectorMath.normalize(model.sentenceVector(sentence.sA)),
+								VectorMath.normalize(model.sentenceVector(sentence.sB)))
+						);
 				results_sentences.add(sentence.withSimilarity(similarity));
 			}
 			

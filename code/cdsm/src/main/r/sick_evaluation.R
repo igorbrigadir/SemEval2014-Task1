@@ -1,6 +1,6 @@
 ## Use this R script as follows:
 
-## R --no-save --slave --vanilla --args your-scores gold < sick_evaluation.R 
+## R --no-save --slave --vanilla --args /home/igor/git/SemEval2014-Task1/results/Insight/Insight_w2v_text8.txt /home/igor/git/SemEval2014-Task1/data/SICK_test_annotated.txt < sick_evaluation.R 
 
 ## where your-scores is the file with your system output and gold is
 ## the gold standard file (for example, the SICK_trial.txt and

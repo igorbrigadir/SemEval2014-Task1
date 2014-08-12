@@ -112,8 +112,21 @@ public class ModelComparator {
 		//SemEVAL sentence relatedness:
 		//       cos: 0 ..                1
 		// Unrelated: 1 .. 2 .. 3 .. 4 .. 5 ..Same
-		double score = (similarity <= 0.0D) ? 0.0D : similarity;
-		return (float) ((score * 4) + 1);		
+		
+		double score = 1.0;
+		
+		
+		if (similarity < 0.1D) {
+			return 1.0f;
+		} else {
+			return (float) ((similarity * 4) + 0.5);
+		}
+		
+				
+		
+		
+		
+		
 	}
 
 	public static double normalizeScore(float score) {				

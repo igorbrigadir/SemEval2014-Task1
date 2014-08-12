@@ -70,7 +70,7 @@ public class ModelComparator {
 						
 	//	for (Word2Vec model : models) {
 			
-			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/Insight_w2v_wiki.txt");
+			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/Insight_w2v_wiki_stopwords.txt");
 
 			List<Sentence> results_sentences = new ArrayList<Sentence>();
 
@@ -82,8 +82,9 @@ public class ModelComparator {
 			for (Sentence sentence : sentences) {
 				float similarity = interpolateScore(
 						VectorMath.cosineSimilarity(
-								VectorMath.normalize(model.sentenceVector(sentence.sA)),
-								VectorMath.normalize(model.sentenceVector(sentence.sB)))
+								model.sentenceVector(true, sentence.sA),
+								model.sentenceVector(true, sentence.sB)
+								)
 						);
 				
 				Sentence newSentence = sentence.withSimilarity(similarity);

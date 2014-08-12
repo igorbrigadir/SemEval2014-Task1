@@ -6,6 +6,8 @@ public class Sentence {
 	public final String sA, sB;
 	public final float similarity;
 	public final Entailment entailment;
+	
+	
 
 	public Sentence(final int id, final String sA, final String sB, final float similarity, final Entailment entailment) {
 		this.id = id;
@@ -19,8 +21,11 @@ public class Sentence {
 		String[] parts = line.split("\t");
 		
 		id = Integer.parseInt(parts[0]);
-		sA = parts[1];
-		sB = parts[2];
+
+		sA = parts[1].toLowerCase();
+	
+		sB = parts[2].toLowerCase();
+
 		similarity = Float.parseFloat(parts[3]);
 		entailment = Entailment.fromString(parts[4]);
 	}

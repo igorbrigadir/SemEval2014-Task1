@@ -156,7 +156,7 @@ public class ModelComparator {
 				FileUtils.writeStringToFile(outputFile, resultline, true);
 			
 			
-				String resultlineRaw = String.format("%s\tNA\t%s\n%s", newSentence.id, newSentence.similarity, similarity);
+				String resultlineRaw = String.format("%s\tNA\t%s\t%s\n", newSentence.id, newSentence.similarity, similarity);
 				FileUtils.writeStringToFile(outputFileRaw, resultlineRaw, true);
 			}
 			

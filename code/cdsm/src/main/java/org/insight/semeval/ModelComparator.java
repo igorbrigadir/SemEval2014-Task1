@@ -59,7 +59,7 @@ public class ModelComparator {
 		
 		//models.put("w2v", ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.bin"));
 		
-		//models.put("glove", GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/glove.5.300"));
+		models.put("glove", GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/glove.5.300"));
 		
 		
 		
@@ -88,7 +88,7 @@ public class ModelComparator {
 		/*
 		 * RI:
 		 * 
-		 
+		 */
 		
 		System.out.println("Loading from file: " + "/home/igor/git/SemEval2014-Task1/models/ri.5.5000.kryo");
 			
@@ -181,11 +181,12 @@ public class ModelComparator {
 		
 		double score = 1.0;
 		
+		double fsim = similarity - 0.5D;
 		
-		if (similarity < 0.1D) {
+		if (fsim < 0.1D) {
 			return 1.0f;
 		} else {
-			return (float) ((similarity * 4) + 1);
+			return (float) ((fsim * 4) + 1);
 		}
 		
 				

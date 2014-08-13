@@ -8,13 +8,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-
 import org.insight.word2vec.DiskWord2Vec;
+import org.insight.word2vec.RI2Vec;
 import org.insight.word2vec.Word2Vec;
+import org.insight.word2vec.WordVectorSpace;
 import org.insight.word2vec.util.GloveTextModelLoader;
 import org.insight.word2vec.util.ModelLoader;
 import org.insight.word2vec.util.VectorMath;
@@ -51,7 +53,12 @@ public class ModelComparator {
 
 		// Generate Similarities:
 
-		List<Word2Vec> models = new ArrayList<Word2Vec>();
+		Map<String, WordVectorSpace> models = new HashMap<String,WordVectorSpace>();
+		
+		models.put("w2v", ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.bin"));
+		
+		models.put("glove", GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/glove.5.300"));
+		
 		
 		
 	//	models.add(GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/vectors.6B.200d"));
@@ -66,7 +73,7 @@ public class ModelComparator {
 		 * W2V
 		 */
 		
-		Word2Vec model = ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.bin");
+		//Word2Vec model = ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.bin");
 		
 		/*
 		 * Glove
@@ -79,7 +86,7 @@ public class ModelComparator {
 		/*
 		 * RI:
 		 * 
-		 
+		 */
 		
 		System.out.println("Loading from file: " + "/home/igor/git/SemEval2014-Task1/models/ri.5.5000.kryo");
 			
@@ -89,7 +96,7 @@ public class ModelComparator {
 		kryo.register(clazz.getClass());
 		UnsafeMemoryInput input = new UnsafeMemoryInput(new FileInputStream("/home/igor/git/SemEval2014-Task1/models/ri.5.5000.kryo"));
 							
-		RI2Vec model = kryo.readObject(input, clazz.getClass());
+		RI2Vec mdl = kryo.readObject(input, clazz.getClass());
 		
 		System.out.println("Loaded model: " + ".kryo");
 
@@ -99,6 +106,10 @@ public class ModelComparator {
 				 * 
 				 */
 
+		
+		models.put("ridx", mdl);
+		
+		
 		
 		// For large models:
 		// Preload vectors:
@@ -114,9 +125,13 @@ public class ModelComparator {
 		model.preCache(words);
 */
 						
-	//	for (Word2Vec model : models) {
+		for (Entry<String, WordVectorSpace> e : models.entrySet()) {
 			
-			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/w2v-text8.txt");
+			WordVectorSpace model = e.getValue();
+			
+			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/"+ e.getKey() +"-text8.txt");
+			
+			File outputFileRaw = new File("/home/igor/git/SemEval2014-Task1/results/Insight/"+ e.getKey() +"-text8-raw.txt");
 
 			List<Sentence> results_sentences = new ArrayList<Sentence>();
 
@@ -141,6 +156,8 @@ public class ModelComparator {
 				FileUtils.writeStringToFile(outputFile, resultline, true);
 			
 			
+				String resultlineRaw = String.format("%s\tNA\t%s\n%s", newSentence.id, newSentence.similarity, similarity);
+				FileUtils.writeStringToFile(outputFileRaw, resultlineRaw, true);
 			}
 			
 			
@@ -150,7 +167,7 @@ public class ModelComparator {
 
 		}
 
-	//}
+	}
 
 	/*
 	 * Cosine Similarity to 1..5 Scale:
@@ -166,7 +183,7 @@ public class ModelComparator {
 		if (similarity < 0.1D) {
 			return 1.0f;
 		} else {
-			return (float) ((similarity * 4) + 0.5);
+			return (float) ((similarity * 4) + 1);
 		}
 		
 				

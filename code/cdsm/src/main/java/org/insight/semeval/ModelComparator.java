@@ -94,7 +94,7 @@ public class ModelComparator {
 		RI2Vec clazz = new RI2Vec();
 		Kryo kryo = new Kryo();
 		kryo.register(clazz.getClass());
-		UnsafeMemoryInput input = new UnsafeMemoryInput(new FileInputStream("/home/igor/git/SemEval2014-Task1/models/ri.5.5000.kryo"));
+		UnsafeMemoryInput input = new UnsafeMemoryInput(new FileInputStream("/home/igor/git/SemEval2014-Task1/models/ri.5.5000.s.kryo"));
 							
 		RI2Vec mdl = kryo.readObject(input, clazz.getClass());
 		
@@ -107,7 +107,7 @@ public class ModelComparator {
 				 */
 
 		
-		models.put("ridx", mdl);
+		models.put("ridxs", mdl);
 		
 		
 		

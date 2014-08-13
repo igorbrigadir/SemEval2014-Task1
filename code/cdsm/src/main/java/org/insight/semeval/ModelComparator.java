@@ -130,7 +130,6 @@ public class ModelComparator {
 			WordVectorSpace model = e.getValue();
 			
 			File outputFile = new File("/home/igor/git/SemEval2014-Task1/results/Insight/"+ e.getKey() +"-text8.txt");
-			
 			File outputFileRaw = new File("/home/igor/git/SemEval2014-Task1/results/Insight/"+ e.getKey() +"-text8-raw.txt");
 
 			List<Sentence> results_sentences = new ArrayList<Sentence>();
@@ -138,15 +137,16 @@ public class ModelComparator {
 			// Write Results Header:
 			
 			FileUtils.writeStringToFile(outputFile, "pair_ID\tentailment_judgment\trelatedness_score" + "\n", false);
-
+			FileUtils.writeStringToFile(outputFileRaw, "pair_ID\tentailment_judgment\trelatedness_score" + "\n", false);
 			
 			for (Sentence sentence : sentences) {
-				float similarity = interpolateScore(
-						VectorMath.cosineSimilarity(
-								model.sentenceVector(false, sentence.sA),
-								model.sentenceVector(false, sentence.sB)
-								)
+				
+				double rawSim = VectorMath.cosineSimilarity(
+						model.sentenceVector(false, sentence.sA),
+						model.sentenceVector(false, sentence.sB)
 						);
+				
+				float similarity = interpolateScore(rawSim);
 				
 				Sentence newSentence = sentence.withSimilarity(similarity);
 				
@@ -156,7 +156,7 @@ public class ModelComparator {
 				FileUtils.writeStringToFile(outputFile, resultline, true);
 			
 			
-				String resultlineRaw = String.format("%s\tNA\t%s\t%s\n", newSentence.id, newSentence.similarity, similarity);
+				String resultlineRaw = String.format("%s\tNA\t%s\t%s\n", newSentence.id, newSentence.similarity, rawSim);
 				FileUtils.writeStringToFile(outputFileRaw, resultlineRaw, true);
 			}
 			

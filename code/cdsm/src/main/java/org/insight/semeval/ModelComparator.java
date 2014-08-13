@@ -55,9 +55,11 @@ public class ModelComparator {
 
 		Map<String, WordVectorSpace> models = new HashMap<String,WordVectorSpace>();
 		
-		models.put("w2v", ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.bin"));
+		models.put("w2vn", ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.noneg.bin"));
 		
-		models.put("glove", GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/glove.5.300"));
+		//models.put("w2v", ModelLoader.load("/home/igor/git/SemEval2014-Task1/models/w2v.5.300.bin"));
+		
+		//models.put("glove", GloveTextModelLoader.load("/home/igor/git/SemEval2014-Task1/models/glove.5.300"));
 		
 		
 		
@@ -86,7 +88,7 @@ public class ModelComparator {
 		/*
 		 * RI:
 		 * 
-		 */
+		 
 		
 		System.out.println("Loading from file: " + "/home/igor/git/SemEval2014-Task1/models/ri.5.5000.kryo");
 			
@@ -102,14 +104,14 @@ public class ModelComparator {
 
 		input.close();
 				
-				/*
-				 * 
-				 */
+			
 
 		
 		models.put("ridxs", mdl);
 		
-		
+			/*
+				 * 
+				 */
 		
 		// For large models:
 		// Preload vectors:
